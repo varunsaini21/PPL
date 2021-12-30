@@ -1,0 +1,8 @@
+.createPost {
+  display: flex;
+  flex-direction: column;
+}
+
+.createPost div {
+  padding: 5px 0px;
+}
