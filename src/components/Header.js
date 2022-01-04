@@ -1,4 +1,9 @@
-function Navbarbar() {
+const Header = ({ uName, setUName }) => {
+	const handleLogOut = () => {
+		localStorage.uName = null
+		setUName(null);
+	}
+
 	return (
 		<>
 			<div className="header_lft">
@@ -30,8 +35,8 @@ function Navbarbar() {
 				</div>
 			</div>
 			<div className="header_rgt">
-				<div className="flag_div">
-					<img src="images/flag.png" alt="#" />
+				<div onClick={handleLogOut} className="flag_div">
+					{uName ? "Logout" : null}
 				</div>
 				<input type="text" placeholder="Search" className="txt_box" />
 				<div className="msg_box">
@@ -41,10 +46,9 @@ function Navbarbar() {
 				</div>
 				<div className="info_div">
 					<div className="image_div">
-						{" "}
-						<img src="images/pic.png" alt="#" />{" "}
+						<img src="images/pic.png" alt="#" />
 					</div>
-					<div className="info_div1">{localStorage.getItem('uName')}</div>
+					<div className="info_div1">{uName}</div>
 				</div>
 			</div>
 		</>
@@ -52,4 +56,4 @@ function Navbarbar() {
 	);
 }
 
-export default Navbarbar;
+export default Header;

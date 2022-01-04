@@ -1,25 +1,29 @@
 import axios from 'axios';
-// import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import UploadPost from '../components/UploadPost';
 
-function Rightbtnicon({ setPosts, posts }) {
+const Rightbtnicon = ({ setPosts, posts }) => {
+
+	const [key, setKey] = useState(false);
 
 	const handle = (val) => {
 		console.log('val', val)
 		axios({
-			method: 'post',
+			method: 'POST',
 			data: { search: val },
 			url: 'http://localhost:3001/post/filterdata',
 		}).then(res => {
 			console.log('filterData', res.data)
-			setPosts(res.data)
+			setPosts(res.data);
 		}).catch(err => {
 			console.log('filterdata Err', err);
 		})
 	}
-	// console.log('varun chutiya ', posts)
 
-
+	function handleClick(e) {
+		e.preventDefault();
+		key ? setKey(false) : setKey(true);
+	}
 
 	return (
 		<>
@@ -30,7 +34,8 @@ function Rightbtnicon({ setPosts, posts }) {
 				<span className="btn_sep">
 					<img src="images/btn_sep.png" alt="sep" />
 				</span>
-				<Link to="/postupload"><a href="/">Upload Post</a></Link>
+				<a onClick={handleClick} href="/">Upload Post</a>
+				{key ? <UploadPost /> : null}
 			</div>
 			<div className="rght_btn">
 				<span className="rght_btn_icon">
@@ -51,7 +56,7 @@ function Rightbtnicon({ setPosts, posts }) {
 							<div onClick={() => handle('Cats')}>
 								<span className="list_icon">
 									<img src="images/icon_01.png" alt="up" />
-								</span>{" "}
+								</span>
 								CATS
 							</div>
 						</li>
@@ -59,7 +64,7 @@ function Rightbtnicon({ setPosts, posts }) {
 							<div onClick={() => handle('Dogs')}>
 								<span className="list_icon">
 									<img src="images/icon_02.png" alt="up" />
-								</span>{" "}
+								</span>
 								Dogs
 							</div>
 						</li>
@@ -67,7 +72,7 @@ function Rightbtnicon({ setPosts, posts }) {
 							<div onClick={() => handle('Birds')}>
 								<span className="list_icon">
 									<img src="images/icon_03.png" alt="up" />
-								</span>{" "}
+								</span>
 								Birds
 							</div>
 						</li>
@@ -75,7 +80,7 @@ function Rightbtnicon({ setPosts, posts }) {
 							<div onClick={() => handle('Rabbit')}>
 								<span className="list_icon">
 									<img src="images/icon_04.png" alt="up" />
-								</span>{" "}
+								</span>
 								Rabbit
 							</div>
 						</li>
@@ -83,7 +88,7 @@ function Rightbtnicon({ setPosts, posts }) {
 							<div onClick={() => handle('Others')}>
 								<span className="list_icon">
 									<img src="images/icon_05.png" alt="up" />
-								</span>{" "}
+								</span>
 								Others
 							</div>
 						</li>
@@ -125,7 +130,6 @@ function Rightbtnicon({ setPosts, posts }) {
 				</div>
 			</div>
 		</>
-
 	);
 }
 

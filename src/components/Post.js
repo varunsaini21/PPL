@@ -1,74 +1,119 @@
-import axios from 'axios';
-// import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
+import axios from "axios";
 
-function Post() {
+const Post = ({ setPosts, posts }) => {
+	useEffect(() => {
+		axios.get('http://127.0.0.1:3001/post/present')
+			.then(jsonRes => {
+				setPosts(jsonRes.data);
+				console.log("post>>>present>>>res", jsonRes.data);
+			})
+			.catch((err) => {
+				console.log("post>>>present>>>error", err);
+			});
+	}, [setPosts]);
 
-	const navigate = useNavigate();
-
-	async function submit(e) {
-		e.preventDefault();
-		let formdata = new FormData(e.target);
-		console.log("FORMDATA----------------------------\n", formdata);
-		formdata.append('userName', localStorage.getItem('uName'));
+	async function handleClick(e) {
 
 		await axios({
 			method: 'POST',
-			data: formdata,
-			// withCredentials: true,
-			url: 'http://localhost:3001/post/upload',
-			config: {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				}
-			}
-		}).then((res) => {
-			console.log(res);
-			if (res.data.success) {
-				alert(res.data.message);
-				navigate('/post');
-			}
-			else {
-				console.log('not added');
-			}
+			data: { 'postId': e, 'userId': localStorage.getItem('uName') },
+			url: 'http://localhost:3001/post/likes'
 		})
-
+			.then((res) => {
+				console.log('Post like button pressed', res);
+			})
+			.catch((err) => {
+				console.log('Feed.js>>>err', err);
+			})
 	}
 
 	return (
-		<form onSubmit={submit} >
-			<div className="createPost">
-				<h1>Upload a Post</h1>
-				<div>
-					<div>Title</div>
-					<input name="title" type="text" placeholder="Enter the title" required />
-				</div>
-				<div>
-					<label> Select Category </label>
-					<select name="category">
-						<option value="Others"> Others
-						</option>
-						<option value="Dogs"> Dogs
-						</option>
-						<option value="Cats"> Cats
-						</option>
-						<option value="Birds"> Birds
-						</option>
-						<option value="Rabbit"> Rabbit
-						</option>
-
-					</select>
-				</div>
-				<div>
-					<div>Image</div>
-					<input type="file" name="image" />
-				</div>
-				<div>
-					<input type="submit" defaultValue="Upload" />
-				</div>
-				<Link to="/post"><h3>Go Back</h3></Link>
-			</div>
-		</form>
+		<>
+			{
+				posts.slice(0).reverse().map(post =>
+					<div className="contnt_2">
+						<div className="div_a">
+							<div className="div_title">
+								{post.title}
+							</div>
+							<div className="btm_rgt">
+								<div className="btm_arc">{post.category}</div>
+							</div>
+							<div className="div_top">
+								<div className="div_top_lft">
+									<img src="images/img_6.png" alt="#" />
+									{post.userName}
+								</div>
+								<div className="div_top_rgt">
+									<span className="span_date">{post.date}</span>
+									<span className="span_time">{post.time}</span>
+								</div>
+							</div>
+							<div className="div_image">
+								<img src={'http://localhost:3001/' + post.image} alt="pet" />
+							</div>
+							<div className="div_btm">
+								<div className="btm_list">
+									<ul>
+										<li>
+											<a href="/">
+												<span className="btn_icon">
+													<img src="images/icon_001.png" alt="share" />
+												</span>
+												Share
+											</a>
+										</li>
+										<li>
+											<a href="/">
+												<span className="btn_icon">
+													<img src="images/icon_002.png" alt="share" />
+												</span>
+												Flag
+											</a>
+										</li>
+										<li>
+											<a href="/">
+												<span className="btn_icon">
+													<img src="images/icon_004.png" alt="share" />
+												</span>
+												4 Comments
+											</a>
+										</li>
+										<li>
+											<a href="#" onClick={() => handleClick(post._id)}>
+												<span className="btn_icon">
+													<img src="images/icon_003.png" alt="share" />
+												</span>
+												Likes
+											</a>
+										</li>
+										<div className="like_count" style={{ marginRight: 10 }}>
+											<span className="lft_cnt" />
+											<span className="mid_cnt">{post.likes.length}</span>
+											<span className="rit_cnt" />
+										</div>
+										<li>
+											<a href="/">
+												<span className="btn_icon">
+													<img src="images/icon_003.png" alt="share" />
+												</span>
+												Unlike
+											</a>
+										</li>
+										<div className="like_count">
+											<span className="lft_cnt" />
+											<span className="mid_cnt">4</span>
+											<span className="rit_cnt" />
+										</div>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				)
+			}
+		</>
 	);
 }
 

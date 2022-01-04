@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import { Link } from 'react-router-dom';
 
-function Newpw() {
+const Newpw = () => {
 
 	async function submit(e) {
 		e.preventDefault();
@@ -17,8 +17,6 @@ function Newpw() {
 			})
 				.then((res) => {
 					console.log('Email found', res);
-
-
 				})
 				.catch((err) => {
 					console.log('Newpw.js>>>err', err);
@@ -49,7 +47,6 @@ function Newpw() {
 				</ul>
 			</form>
 		</div>
-
 	);
 }
 

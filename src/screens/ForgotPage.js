@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Forgotpw() {
+const Forgotpw = () => {
 	const navigate = useNavigate();
 
 	async function submit(e) {
@@ -21,7 +21,8 @@ function Forgotpw() {
 					navigate('/');
 				}
 				else {
-					navigate('/reset');
+					;
+					// navigate('/reset');
 				}
 
 			})
